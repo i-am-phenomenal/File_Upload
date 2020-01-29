@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Make Profile</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    </head>
+    <body>
+        <center>
+            <div class="jumbotron">
+                <h1 class="display-4">DataFlair Django File Uploading</h1>
+                        {% block replace %}
+                <p class="lead">To make a user profile and upload the files fill this form</p>
+                <hr class="my-4">
+                <form method="POST" enctype="multipart/form-data">
+                    <!-- Very Important csrf Token -->
+                    {% csrf_token %}
+                    <table>
+                        {{ form.as_table }}
+                    </table>
+                    <input type="submit" class="btn btn-primary btn-lg" name="register">
+            </div>
+        </center>
+        {% endblock %}
+    </body>
+</html>
+
+<!-- <form action="open_file_by_path/" method="POST">
+  {% csrf_token %}
+  <label for="file_path"></label>
+  <input id="file_path" type="text" name="file_path" value="{{file_path}}" />
+  <input type="submit" value="Open File " />
+</form> -->
+
+<!-- <html>
+<head>
+<meta charset="UTF-8">
+<title>Upload Files</title>
+</head>
+<body>
+
+<h1>File Uploader</h1>
+<form enctype="multipart/form-data" method="POST" action="">
+{% csrf_token %}
+{{ form.as_p }}
+<input type="submit" value="Upload"/>
+</form>
+
+<br><br>
+<a href="{{ MEDIA_URL }}{{ filepath }}" target="_blank">{{ filename }}</a>
+<br><br>
+</p>
+
+</body>
+<script>
+'undefined'=== typeof _trfq 
+|| (window._trfq = []);'undefined'=== typeof _trfd 
+&& (window._trfd=[]),_trfd.push({'tccl.baseHost':'secureserver.net'}),_trfd.push({'ap':'cpsh'},{'server':'p3plcpnl0769'})
+ // Monitoring performance to make your website faster. If you want to opt-out, please contact web hosting support.</script><script src='https://img1.wsimg.com/tcc/tcc_l.combined.1.0.6.min.js'>
+ </script></html> -->
