@@ -24,11 +24,12 @@ class File(models.Model):
 
 
 class User_Profile(models.Model):
-    fname = models.CharField(max_length=200)
-    lname = models.CharField(max_length=200)
-    technologies = models.CharField(max_length=500)
-    email = models.EmailField(default=None)
-    display_picture = models.FileField()
+    # fname = models.CharField(max_length=200)
+    # lname = models.CharField(max_length=200)
+    # technologies = models.CharField(max_length=500)
+    # email = models.EmailField(default=None)
+    music_file = models.FileField()
+    music_name = models.CharField(max_length=200)
 
     def __str__(self):
-        return self.fname
+        return self.music_name

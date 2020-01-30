@@ -24,9 +24,13 @@ class Profile_Form(forms.ModelForm):
     class Meta:
         model = User_Profile
         fields = [
-            'fname',
-            'lname',
-            'technologies',
-            'email',
-            'display_picture'
+            'music_file',
+            'music_name'
         ]
+        # fields = [
+        #     'fname',
+        #     'lname',
+        #     'technologies',
+        #     'email',
+        #     'music_file'
+        # ]
