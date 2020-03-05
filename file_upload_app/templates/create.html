@@ -7,9 +7,7 @@
     <body>
         <center>
             <div class="jumbotron">
-                <!-- <h1 class="display-4">Django File Uploading</h1> -->
                         {% block replace %}
-                <p class="lead">To make a user profile and upload the files fill this form</p>
                 <hr class="my-4">
                 <form method="POST" enctype="multipart/form-data">
                     <!-- Very Important csrf Token -->
@@ -19,7 +17,14 @@
                     </table>
                     <input type="submit" class="btn btn-primary btn-lg" name="register">
             </div>
-        </center>
+        </center>       
         {% endblock %}
+        <!-- <center> 
+            <p class="lead"> Deletes all music files from the database </p>
+            <form action="delete_all_records/" method="POST">
+                {% csrf_token %}
+                <input type="submit" class="btn btn-primary btn-lg" value="DELETE" name="register">
+            </form> 
+        </center> -->
     </body>
 </html>

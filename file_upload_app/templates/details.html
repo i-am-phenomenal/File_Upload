@@ -1,23 +1,9 @@
 {% extends 'create.html' %} {% block replace %}
 <center>
   <div class="jumbotron">
-    <!-- <h1 class="display-4"><br />Hello {{ user_pr.fname }}</h1> -->
-    <!-- <p class="lead">its an awesome profile picture</p> -->
     <hr class="my-4" />
-    <!-- <img
-      src="{{ user_pr.music_file.url }}"
-      class="image_responsive"
-      height="100px"
-      width="100px"
-    /> -->
-    <p>{{user_pr.music_file.url}} <br /></p>
-    <!-- <p>
-      {{ user_pr.music_file.url }}<br />
-      You have learned some awesome technologies like {{ user_pr.technologies }}
-    </p> -->
   </div>
 </center>
-<!-- {{ song.music_file.url}} -->
 {% if music_files %} {% for song in music_files %}
 <div class="card" style="width: 18rem;">
   <div class="card-body">
@@ -27,13 +13,14 @@
       {% csrf_token %}
       <p>
         PLAY:
-        <a href="#">
+        <form action="play_song/" method="POST"> 
+          <input type="submit" class="glyphicon glyphicon-play">
+        </form>
+        <!-- <a href="play_song/">
           <span class="glyphicon glyphicon-play"></span>
-        </a>
+        </a> -->
       </p>
     </form>
-    <!-- <a href="#" class="card-link">Card link</a> -->
-    <!-- <a href="#" class="card-link">Another link</a> -->
   </div>
 </div>
 <br />

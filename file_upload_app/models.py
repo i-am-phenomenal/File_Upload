@@ -1,4 +1,6 @@
 from django.db import models
+import os 
+import uuid 
 
 # Create your models here.
 
@@ -24,12 +26,14 @@ class File(models.Model):
 
 
 class User_Profile(models.Model):
-    # fname = models.CharField(max_length=200)
-    # lname = models.CharField(max_length=200)
-    # technologies = models.CharField(max_length=500)
-    # email = models.EmailField(default=None)
+    uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     music_file = models.FileField()
     music_name = models.CharField(max_length=200)
+    extension = models.CharField(max_length=10, default='mp3', editable=False)
+   
 
     def __str__(self):
         return self.music_name
+
+    def return_file_name(self):
+        return os.path.basename(self.music_file.name)

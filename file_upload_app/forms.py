@@ -27,10 +27,3 @@ class Profile_Form(forms.ModelForm):
             'music_file',
             'music_name'
         ]
-        # fields = [
-        #     'fname',
-        #     'lname',
-        #     'technologies',
-        #     'email',
-        #     'music_file'
-        # ]
