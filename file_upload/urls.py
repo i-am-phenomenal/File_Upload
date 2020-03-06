@@ -28,7 +28,9 @@ from django.conf import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('upload/', include('file_upload_app.urls')),
-    path(r'^/(?P<prefix>\w+)/play_song/', play_song),
+    path(r'list_all/play_song/', play_song),
+    path(r'play_song/', play_song),
+    path(r'upload/play_song/', play_song),
     path('list_all/', list_all_files),
     path('delete_all/', delete_all_files),
 ]

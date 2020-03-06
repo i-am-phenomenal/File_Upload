@@ -12,13 +12,10 @@
     <form action="play_song/" method="POST">
       {% csrf_token %}
       <p>
-        PLAY:
-        <form action="play_song/" method="POST"> 
-          <input type="submit" class="glyphicon glyphicon-play">
-        </form>
-        <!-- <a href="play_song/">
-          <span class="glyphicon glyphicon-play"></span>
-        </a> -->
+        <form action="/play_song/" method="POST"> 
+          <input type="hidden" name="file_uuid" value="{{song.uuid}}">
+          <input type="submit" class="glyphicon glyphicon-play" value="Play">
+        </form> 
       </p>
     </form>
   </div>
