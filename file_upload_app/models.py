@@ -30,7 +30,7 @@ class User_Profile(models.Model):
     music_file = models.FileField()
     music_name = models.CharField(max_length=200)
     extension = models.CharField(max_length=10, default='mp3', editable=False)
-   
+    is_being_played = models.BooleanField(default=False)
 
     def __str__(self):
         return self.music_name

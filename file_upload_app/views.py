@@ -5,32 +5,56 @@ from .forms import FileForm, UploadFileForm
 from django.http import HttpResponseRedirect
 from .forms import UploadFileForm, Profile_Form
 import simpleaudio as sa
-from pydub import AudioSegment
+from pydub import AudioSegment 
 from pydub.playback import play
-from playsound import playsound
 import logging
 import traceback 
 from file_upload.settings import MEDIA_ROOT
 import uuid
-import subprocess 
-
+import os
+import pydub
+import scipy
+import scipy.io.wavfile
+import tempfile
 # UTILITIES START
+
 ALLOWED_FILE_TYPES = ['jpg', 'jpeg', 'mp3', 'wav', 'aac', 'amr']
+
+def log_exception():
+    logging.error(traceback.format_exc())
 
 def get_file_type(file):
     return file.music_file.url.split('.')[-1]
 
-def convert_name_to_wav(filename):
-    return filename.split('.')[0] + '.wav'
-    
-# C:\django_projects\File_Upload\media/mp3_test.mp3
 
-def return_formatted_name(filename): 
-    splitted = filename.split('media')
-    sliced_name = splitted[1][1:]
-    return splitted[0] + '/media/' + sliced_name
+    """
+    Read an MP3 File into numpy data.
+    :param file_path: String path to a file
+    :param as_float: Cast data to float and normalize to [-1, 1]
+    :return: Tuple(rate, data), where
+        rate is an integer indicating samples/s
+        data is an ndarray(n_samples, 2)[int16] if as_float = False
+            otherwise ndarray(n_samples, 2)[float] in range [-1, 1]
+    """
 
-# UTILITIES END
+def convert_to_arr(filename, as_float = False): 
+    path, extension = os.path.splitext(filename)
+    assert extension == '.mp3'
+    mp3 = pydub.AudioSegment.from_mp3(filename)
+    _, path = tempfile.mkstemp()
+    mp3.export(path, format='wav')
+    rate, data = scipy.io.wavfile.read(path)
+    try: 
+        os.remove(path) # Files at this path needs to be deleted(will do in future commits probably).
+    except Exception as _:
+        log_exception()
+
+    if as_float:
+        data = data/(2**15)
+
+    return rate, data
+
+
 
 # Create your views here.
 
@@ -38,28 +62,12 @@ def play_song(request):
     file_uuid=request.POST.get("file_uuid")
     fetched =  User_Profile.objects.get(uuid=file_uuid)
     filename = MEDIA_ROOT + str(fetched.music_file)
-    formatted_filename = return_formatted_name(filename)
-    print(formatted_filename, "   FORMATTED FILE NAME ")
-    song = AudioSegment.from_mp3(formatted_filename)
-    play(song)
-    # try:
-    #     print(formatted_filename, "******* FILE NAME *******")
-    #     subprocess.call(['ffmpeg', '-i', formatted_filename,
-    #                convert_name_to_wav(formatted_filename)])
-        # audio = AudioSegment.from_mp3(filename)
-        # audio.export(return_formatted_name(filename), format="wav")
-        #  playsound(MEDIA_ROOT + str(fetched.music_file))
-    # except Exception as e: 
-    #     logging.error(traceback.format_exc())
-
-
-    # wave_object = sa.WaveObject.from_wave_file(filename)
-    # play_object = wave_object.play()
-    # play_object.wait_done()
-    # file = AudioSegment.from_wav(MEDIA_ROOT + str(fetched.music_file))
-    # play(file)
-    # playsound(MEDIA_ROOT + str(fetched.music_file))
-
+    rate, data = convert_to_arr(filename, False)
+    try:  
+        audio_object = sa.play_buffer(data, 2, 2, 44100) # There is some changes in the pitch and tempo whne using this method. Need to look into this
+        # print(audio_object)
+    except Exception as _: 
+        log_exception()
 
     all_records = User_Profile.objects.all()
     
