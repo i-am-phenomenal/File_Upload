@@ -16,6 +16,9 @@ import pydub
 import scipy
 import scipy.io.wavfile
 import tempfile
+from django.contrib import messages
+
+
 # UTILITIES START
 
 ALLOWED_FILE_TYPES = ['jpg', 'jpeg', 'mp3', 'wav', 'aac', 'amr']
@@ -36,7 +39,6 @@ def get_file_type(file):
         data is an ndarray(n_samples, 2)[int16] if as_float = False
             otherwise ndarray(n_samples, 2)[float] in range [-1, 1]
     """
-
 def convert_to_arr(filename, as_float = False): 
     path, extension = os.path.splitext(filename)
     assert extension == '.mp3'
@@ -54,24 +56,38 @@ def convert_to_arr(filename, as_float = False):
 
     return rate, data
 
+def return_all_music_records():
+    return User_Profile.objects.all()
 
+def return_file_uuid(request_object):
+    return request_object.POST.get("file_uuid")
+
+# UTILITIES END
 
 # Create your views here.
 
+def pause_current_music(request):
+    file_uuid = return_file_uuid(request)
+    fetched = User_Profile.objects.get(uuid=file_uuid)
+    # wip    
+    return render(request, 'details.html', {'music_files': return_all_music_records()})
+
 def play_song(request):
-    file_uuid=request.POST.get("file_uuid")
+    file_uuid = return_file_uuid(request)
     fetched =  User_Profile.objects.get(uuid=file_uuid)
+    # print(type(fetched.music_file), "00000000000000")
+    # print(type(str(fetched.music_file)), "1111111111111111")
     filename = MEDIA_ROOT + str(fetched.music_file)
+    # print(filename, "2222222222222222222")
     rate, data = convert_to_arr(filename, False)
     try:  
-        audio_object = sa.play_buffer(data, 2, 2, 44100) # There is some changes in the pitch and tempo whne using this method. Need to look into this
-        # print(audio_object)
+        audio_object = sa.play_buffer(data, 2, 2, 44100) # There are some changes in the pitch and tempo whne using this method. Need to look into this
+        if audio_object.is_playing():
+            messages.success(request, 'True')
     except Exception as _: 
         log_exception()
 
-    all_records = User_Profile.objects.all()
-    
-    return redirect('/list_all', {'music_files': all_records})
+    return redirect('/list_all', {'music_files': return_all_music_records()})
 
 def create_profile(request):
     form = Profile_Form()

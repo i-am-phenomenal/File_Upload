@@ -1,4 +1,8 @@
 {% extends 'create.html' %} {% block replace %}
+{% load static %}
+
+<body>
+
 <center>
   <div class="jumbotron">
     <hr class="my-4" />
@@ -9,13 +13,56 @@
   <div class="card-body">
     <h5 class="card-title">{{ song.music_name }}</h5>
     <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+
+    <div class='row'>
+      {{link}}
+      {{song.music_file.url}}
+      <audio controls>
+          <source src="{{song.music_file.url}}" type="audio/mpeg">
+          Your browser does not support the audio element.
+      </audio>
+  </div>
+  
     <form action="play_song/" method="POST">
       {% csrf_token %}
-      <p>
+      <p> 
         <form action="/play_song/" method="POST"> 
           <input type="hidden" name="file_uuid" value="{{song.uuid}}">
           <input type="submit" class="glyphicon glyphicon-play" value="Play">
+           
         </form> 
+
+
+
+        
+          <!-- {% if messages %}
+          <div class="btn-group" role='group' aria-label="Basic example">
+            <form action="/expand_current_music/" method="POST">
+              {% csrf_token %}
+              <input type="hidden" name="file_uuid" value="{{song.uuid}}">
+              <input type="submit" class="glyphicon glyphicon-play" value="Expand">
+            </form>
+            <form action="/pause_current_music/" method="POST">
+              {% csrf_token %}
+              <input type="hidden" name="file_uuid" value="{{song.uuid}}">
+              <input type="submit" class="glyphicon glyphicon-play" value="Pause">
+            </form>
+            <form action="/play_current_music/" method="POST">
+              {% csrf_token %}
+              <input type="hidden" name="file_uuid" value="{{song.uuid}}">
+              <input type="submit" class="glyphicon glyphicon-play" value="Play">
+            </form>
+          </div>
+              
+              
+            </form>
+           
+         <ul class="messages">
+          {% for message in messages %}
+            <li> {{message }} </li>
+            {% endfor %}
+        </ul>  -->
+        <!-- {% endif %} --> -->
       </p>
     </form>
   </div>
@@ -25,3 +72,4 @@
 {% endfor %} {% else %}
 <div>NO SONGS AT THIS MOMENT !!</div>
 {% endif %} {% endblock %}
+</body>

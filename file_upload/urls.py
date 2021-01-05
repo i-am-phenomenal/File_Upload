@@ -15,15 +15,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from file_upload_app.views import render_home, play_song, list_all_files, delete_all_files
+from file_upload_app.views import render_home, play_song, list_all_files, delete_all_files, pause_current_music
 from django.conf.urls.static import static
 from django.conf import settings
-
-# urlpatterns = [
-#     path('admin/', admin.site.urls),
-#     path('', render_home),
-#     # path('open_file_by_path/', upload_file_by_path )
-# ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -33,4 +27,5 @@ urlpatterns = [
     path(r'upload/play_song/', play_song),
     path('list_all/', list_all_files),
     path('delete_all/', delete_all_files),
+    path('pause_current_music/', pause_current_music)
 ]
